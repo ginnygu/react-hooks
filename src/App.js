@@ -1,31 +1,18 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
-
+import AllPokemon from "./components/AllPokemon";
+import PokemonDetail from "./components/PokemonDetail";
+import SearchPokemon from "./components/SearchPokemon";
 function App() {
-  const [pokemonList, setPokemonList] = useState([]);
-
-  useEffect(async () => {
-    fetchPokemon();
-  }, []);
-
-  async function fetchPokemon() {
-    try {
-      let payload = await axios.get(
-        "https://pokeapi.co/api/v2/pokemon?limit=100&offset=200"
-      );
-
-      setPokemonList(payload.data.results);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
   return (
     <div className="App">
-      {pokemonList.map((item) => {
-        return <div key={item.name}>{item.name}</div>;
-      })}
+      <Router>
+        <Switch>
+          <Route exact path="/search" component={SearchPokemon} />
+          <Route exact path="/fetch-pokemon/:name" component={PokemonDetail} />
+          <Route exact path="/all-pokemon" component={AllPokemon} />
+        </Switch>
+      </Router>
     </div>
   );
 }
